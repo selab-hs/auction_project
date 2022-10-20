@@ -10,21 +10,17 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name="BOARD")
-public class BoardEntity extends BaseEntity {
+public class BoardComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
+    private Long boardId;
+
+    @Column(nullable = false)
     private Long memberId;
 
     @Column
-    private String title;
-
-    @Column
-    private String category;
-
-    @Column
-    private String content;
+    private String comment;
 }
