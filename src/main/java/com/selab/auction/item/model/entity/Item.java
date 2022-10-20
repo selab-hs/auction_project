@@ -1,7 +1,7 @@
 package com.selab.auction.item.model.entity;
 
 import com.selab.auction.common.BaseEntity;
-import com.selab.auction.item.model.vo.State;
+import com.selab.auction.common.State;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
