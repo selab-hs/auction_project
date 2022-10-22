@@ -1,5 +1,6 @@
 package com.selab.auction.item.model.entity;
 
+import com.selab.auction.common.BaseEntity;
 import com.selab.auction.item.model.vo.Category;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ItemCategory {
+public class ItemCategory extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
