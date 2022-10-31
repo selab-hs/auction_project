@@ -1,5 +1,6 @@
 package com.selab.auction.item.controller;
 
+import com.selab.auction.common.dto.ResponseDto;
 import com.selab.auction.item.model.dto.ItemCreateRequest;
 import com.selab.auction.item.model.dto.ItemResponse;
 import com.selab.auction.item.model.dto.ItemsResponse;
@@ -24,18 +25,18 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<ItemsResponse> getAllItems() {
         ItemsResponse items = itemService.getAllItems();
-        return ResponseEntity.ok(items);
+        return ResponseDto.ok(items);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemResponse> getItemById(@PathVariable("id") Long id) {
         ItemResponse item = itemService.getItemById(id);
-        return ResponseEntity.ok(item);
+        return ResponseDto.ok(item);
     }
 
     @PostMapping
     public ResponseEntity<ItemResponse> createItem(@RequestBody ItemCreateRequest request) {
         ItemResponse item = itemService.createItem(request);
-        return ResponseEntity.ok(item);
+        return ResponseDto.created(item);
     }
 }
