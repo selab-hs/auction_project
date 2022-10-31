@@ -1,11 +1,11 @@
 package com.selab.auction.member.model.entity;
 
 import com.selab.auction.common.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,13 +15,14 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
+    @Email
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false)
@@ -39,4 +40,18 @@ public class Member extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String state;
 
+    public Member(String email, String password, String nickname, String address, String phone, String sex) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.address = address;
+        this.phone = phone;
+        this.sex = sex;
+        this.grade = 0.0;
+        this.state = "ON";
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
+    }
 }

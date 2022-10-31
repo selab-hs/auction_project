@@ -1,0 +1,43 @@
+package com.selab.auction.member.service;
+
+import com.selab.auction.member.dto.MemberSignUpRequestDto;
+import com.selab.auction.member.dto.MemberSignUpResponseDto;
+import com.selab.auction.member.model.entity.Member;
+import com.selab.auction.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class MemberSignUpService {
+    private final MemberRepository memberRepository;
+
+    public MemberSignUpResponseDto signUp(MemberSignUpRequestDto newMember) {
+        Member member = new Member(
+                newMember.getEmail(),
+                newMember.getPassword(),
+                newMember.getNickname(),
+                newMember.getAddress(),
+                newMember.getPhone(),
+                newMember.getSex()
+        );
+
+        memberRepository.save(member);
+
+        MemberSignUpResponseDto savedDto = new MemberSignUpResponseDto(
+                member.getId(),
+                member.getEmail(),
+                member.getPassword(),
+                member.getNickname(),
+                member.getAddress(),
+                member.getPhone(),
+                member.getSex(),
+                member.getGrade(),
+                member.getState()
+        );
+
+        return savedDto;
+    }
+}
