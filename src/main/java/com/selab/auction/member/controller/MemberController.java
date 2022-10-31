@@ -17,7 +17,7 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberSignUpService memberSignUpService;
 
-    @PostMapping("/singUp")
+    @PostMapping("/signUp")
     public ResponseEntity<MemberSignUpResponseDto> signUp(@Valid @RequestBody MemberSignUpRequestDto newMember) {
         MemberSignUpResponseDto member = memberSignUpService.signUp(newMember);
         return new ResponseEntity<>(member, HttpStatus.CREATED);

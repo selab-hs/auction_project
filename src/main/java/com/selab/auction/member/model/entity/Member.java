@@ -16,7 +16,6 @@ public class Member extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Email
     private String email;
 
     @Column(nullable = false)
@@ -40,6 +39,7 @@ public class Member extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String state;
 
+    @Builder
     public Member(String email, String password, String nickname, String address, String phone, String sex) {
         this.email = email;
         this.password = password;
@@ -49,9 +49,5 @@ public class Member extends BaseEntity {
         this.sex = sex;
         this.grade = 0.0;
         this.state = "ON";
-    }
-
-    public void encodePassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(password);
     }
 }
