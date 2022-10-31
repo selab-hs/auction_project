@@ -1,5 +1,6 @@
 package com.selab.auction.item.service;
 
+import com.selab.auction.error.exception.item.NotExistItemException;
 import com.selab.auction.item.model.dto.ItemResponse;
 import com.selab.auction.item.model.dto.ItemsResponse;
 import com.selab.auction.item.model.entity.Item;
@@ -22,8 +23,8 @@ public class ItemService {
         return new ItemsResponse(responses);
     }
 
-//    public ItemResponse getItemById(Long id) {
-//        Item item = itemRepository.findById(id).orElseThrow();
-//
-//    }
+    public ItemResponse getItemById(Long id) {
+        Item item = itemRepository.findById(id).orElseThrow(() -> new NotExistItemException());
+        return ItemResponse.of(item);
+    }
 }
