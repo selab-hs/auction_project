@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAuctionDto {
-    long itemId;
-    long memberId;
-    long requestPrice;
+    Long itemId;
+    Long memberId;
+    Long requestPrice;
 
     public Auction toEntity(){
         return Auction.builder()

@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AuctionResponseDto {
-    long id;
-    long itemId;
-    long memberId;
-    long auctionPrice;
+    Long id;
+    Long itemId;
+    Long memberId;
+    Long auctionPrice;
 
     @Builder
     public AuctionResponseDto(long id, long itemId, long memberId, long auctionPrice){

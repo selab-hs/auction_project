@@ -20,16 +20,16 @@ public class Auction extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
-    private long itemId;
+    private Long itemId;
 
     @Column(nullable = false)
-    private long memberId;
+    private Long memberId;
 
     @Column(name = "item_price", nullable = false)
-    private long auctionPrice;
+    private Long auctionPrice;
 
     @Builder
     public Auction(long itemId, long memberId, long requestPrice){

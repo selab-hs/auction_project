@@ -16,16 +16,16 @@ import javax.persistence.*;
 public class AuctionProgress extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
-    private long itemId;
+    private Long itemId;
 
     @Column
-    private long memberId;
+    private Long memberId;
 
     @Column
-    private long auctionPrice;
+    private Long auctionPrice;
 
     @Builder
     public AuctionProgress(long itemId, long memberId, long requestPrice){
