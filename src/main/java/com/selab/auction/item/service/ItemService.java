@@ -26,13 +26,13 @@ public class ItemService {
     }
 
     public ItemResponse getItemById(Long id) {
-        // 조회 시 category id랑 category 같이 반환하기
         Item item = itemRepository.findById(id).orElseThrow(() -> new NotExistItemException());
         return ItemResponse.of(item);
     }
 
     public ItemResponse createItem(ItemCreateRequest request) {
         //예외처리 - categoryId, memberId, 가능한 price인지?
+
         return ItemResponse.of(itemRepository.save(Item.of(request)));
     }
 }
