@@ -2,7 +2,10 @@ package com.selab.auction.item.model.entity;
 
 import com.selab.auction.common.BaseEntity;
 import com.selab.auction.common.State;
+import com.selab.auction.item.model.dto.ItemCreateRequest;
+import com.selab.auction.item.model.vo.Category;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,8 +28,8 @@ public class Item extends BaseEntity {
     @Column(name = "member_id", nullable = false)
     private Long memberId;
 
-    @Column(name = "category_id", nullable = false)
-    private Long categoryId;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Column(name = "item_name", nullable = false)
     private String name;
@@ -44,4 +47,29 @@ public class Item extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private State state;
+
+    @Builder
+    public Item(Long memberId, Category category, String name, Long price, String description, Integer auctionPeriod, Long immediatelyPrice, State state) {
+        this.memberId = memberId;
+        this.category = category;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.auctionPeriod = auctionPeriod;
+        this.immediatelyPrice = immediatelyPrice;
+        this.state = state;
+    }
+
+    public static Item of(ItemCreateRequest request) {
+        return Item.builder()
+                .memberId(request.memberId())
+                .category(Category.categoryConverter(request.category()))
+                .name(request.name())
+                .price(request.price())
+                .description(request.description())
+                .auctionPeriod(request.auctionPeriod())
+                .immediatelyPrice(request.immediatelyPrice())
+                .state(State.ACTIVE)
+                .build();
+    }
 }

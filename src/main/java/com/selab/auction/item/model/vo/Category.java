@@ -1,5 +1,6 @@
 package com.selab.auction.item.model.vo;
 
+import com.selab.auction.error.exception.item.NotExistCategoryException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,4 +12,13 @@ public enum Category {
     ;
 
     private final String description;
+
+    public static Category categoryConverter(String str) {
+        for(Category c : Category.values()) {
+            if(c.toString().equals(str)) {
+                return c;
+            }
+        }
+        throw new NotExistCategoryException();
+    }
 }
