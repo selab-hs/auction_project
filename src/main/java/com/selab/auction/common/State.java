@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum State {
     ACTIVE,
-    INACTIVE
+    INACTIVE,
     ;
+
+
 }

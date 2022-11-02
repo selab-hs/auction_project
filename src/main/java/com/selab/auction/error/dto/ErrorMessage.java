@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorMessage {
     NOT_EXIST_ITEM(HttpStatus.NOT_FOUND, "존재하지 않는 상품입니다"),
     NOT_EXITS_CATEGORY(HttpStatus.NOT_FOUND, "존재하지 않는 카테고리입니다"),
-
-    WRONG_REQUEST_PRICE(HttpStatus.BAD_REQUEST, "잘못된 경매 요청가격입니다")
+    DELETE_ITEM(HttpStatus.NOT_FOUND, "삭제된 상품입니다");
+    WRONG_REQUEST_PRICE(HttpStatus.BAD_REQUEST, "잘못된 경매 요청가격입니다"),
     ;
 
     private final HttpStatus status;

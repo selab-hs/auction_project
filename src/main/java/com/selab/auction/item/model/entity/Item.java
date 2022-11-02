@@ -3,7 +3,9 @@ package com.selab.auction.item.model.entity;
 import com.selab.auction.common.BaseEntity;
 import com.selab.auction.common.State;
 import com.selab.auction.item.model.dto.ItemCreateRequest;
+import com.selab.auction.item.model.dto.ItemUpdateRequest;
 import com.selab.auction.item.model.vo.Category;
+import com.selab.auction.item.model.vo.ItemState;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,10 +48,10 @@ public class Item extends BaseEntity {
     private Long immediatelyPrice;
 
     @Enumerated(EnumType.STRING)
-    private State state;
+    private ItemState state;
 
     @Builder
-    public Item(Long memberId, Category category, String name, Long price, String description, Integer auctionPeriod, Long immediatelyPrice, State state) {
+    public Item(Long memberId, Category category, String name, Long price, String description, Integer auctionPeriod, Long immediatelyPrice, ItemState state) {
         this.memberId = memberId;
         this.category = category;
         this.name = name;
@@ -69,7 +71,20 @@ public class Item extends BaseEntity {
                 .description(request.description())
                 .auctionPeriod(request.auctionPeriod())
                 .immediatelyPrice(request.immediatelyPrice())
-                .state(State.ACTIVE)
+                .state(ItemState.ACTIVE)
                 .build();
+    }
+
+    public void update(ItemUpdateRequest request) {
+        this.name = request.name();
+        this.price = request.price();
+        this.description = request.description();
+        this.category = Category.categoryConverter(request.category());
+        this.auctionPeriod = request.auctionPeriod();
+        this.immediatelyPrice = request.immediatelyPrice();
+    }
+
+    public void updateState(ItemState state) {
+        this.state = state;
     }
 }
