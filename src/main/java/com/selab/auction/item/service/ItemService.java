@@ -58,4 +58,9 @@ public class ItemService {
         Item item = itemRepository.findById(id).orElseThrow(NotExistItemException::new);
         item.updateState(ItemState.INACTIVE);
     }
+
+    @Transactional(readOnly = true)
+    public Item getItemEntityById(Long id) {
+        return itemRepository.findById(id).orElseThrow(NotExistItemException::new);
+    }
 }
