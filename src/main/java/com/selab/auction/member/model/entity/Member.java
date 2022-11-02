@@ -1,11 +1,14 @@
 package com.selab.auction.member.model.entity;
 
 import com.selab.auction.common.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.selab.auction.member.vo.MemberRole;
+import com.selab.auction.member.vo.MemberState;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,13 +18,13 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false)
@@ -37,6 +40,21 @@ public class Member extends BaseEntity {
     private Double grade;
 
     @Column(length = 20, nullable = false)
-    private String state;
+    private MemberState state;
 
+    @Column
+    private MemberRole role;
+
+    @Builder
+    public Member(String email, String password, String nickname, String address, String phone, String sex) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.address = address;
+        this.phone = phone;
+        this.sex = sex;
+        this.grade = 0.0;
+        this.state = MemberState.ACTIVE;
+        this.role = MemberRole.USER;
+    }
 }
