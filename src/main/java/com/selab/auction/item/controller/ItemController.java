@@ -4,12 +4,15 @@ import com.selab.auction.common.dto.ResponseDto;
 import com.selab.auction.common.dto.SwaggerNote;
 import com.selab.auction.item.model.dto.ItemCreateRequest;
 import com.selab.auction.item.model.dto.ItemResponse;
+import com.selab.auction.item.model.dto.ItemUpdateRequest;
 import com.selab.auction.item.model.dto.ItemsResponse;
 import com.selab.auction.item.service.ItemService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +46,17 @@ public class ItemController {
     public ResponseEntity<ItemResponse> createItem(@RequestBody ItemCreateRequest request) {
         ItemResponse item = itemService.createItem(request);
         return ResponseDto.created(item);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ItemResponse> updateItemById(@PathVariable("id") Long id, @RequestBody ItemUpdateRequest request) {
+        ItemResponse response = itemService.updateItemById(id, request);
+        return ResponseDto.ok(response);
+    }
+
+    @PatchMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteItemById(@PathVariable("id") Long id) {
+        itemService.deleteItemById(id);
+        return ResponseDto.noContent();
     }
 }

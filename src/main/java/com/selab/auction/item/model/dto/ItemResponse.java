@@ -3,6 +3,7 @@ package com.selab.auction.item.model.dto;
 import com.selab.auction.common.State;
 import com.selab.auction.item.model.entity.Item;
 import com.selab.auction.item.model.vo.Category;
+import com.selab.auction.item.model.vo.ItemState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class ItemResponse {
     private String description;
     private Integer auctionPeriod;
     private Long immediatelyPrice;
-    private State state;
+    private ItemState state;
 
 
     public static ItemResponse of(Item item) {
