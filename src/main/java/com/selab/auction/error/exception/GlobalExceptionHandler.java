@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
         BindingResult bindingResult = e.getBindingResult();
 
         StringBuilder builder = new StringBuilder();
-//        builder.append("")
+
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             builder.append("잘못된 요청 : [");
             builder.append(fieldError.getField());
@@ -45,7 +45,6 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .description(builder.toString())
                 .build();
-
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }

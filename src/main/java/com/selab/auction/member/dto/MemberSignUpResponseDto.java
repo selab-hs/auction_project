@@ -1,5 +1,7 @@
 package com.selab.auction.member.dto;
 
+import com.selab.auction.member.vo.MemberRole;
+import com.selab.auction.member.vo.MemberState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +20,6 @@ public class MemberSignUpResponseDto {
     private String phone;
     private String sex;
     private Double grade;
-    private String state;
+    private MemberState state;
+    private MemberRole role;
 }

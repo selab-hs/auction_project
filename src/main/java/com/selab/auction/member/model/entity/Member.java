@@ -1,6 +1,8 @@
 package com.selab.auction.member.model.entity;
 
 import com.selab.auction.common.BaseEntity;
+import com.selab.auction.member.vo.MemberRole;
+import com.selab.auction.member.vo.MemberState;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,7 +40,10 @@ public class Member extends BaseEntity {
     private Double grade;
 
     @Column(length = 20, nullable = false)
-    private String state;
+    private MemberState state;
+
+    @Column
+    private MemberRole role;
 
     @Builder
     public Member(String email, String password, String nickname, String address, String phone, String sex) {
@@ -49,6 +54,7 @@ public class Member extends BaseEntity {
         this.phone = phone;
         this.sex = sex;
         this.grade = 0.0;
-        this.state = "ON";
+        this.state = MemberState.ACTIVE;
+        this.role = MemberRole.USER;
     }
 }

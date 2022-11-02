@@ -2,8 +2,7 @@ package com.selab.auction.member.service;
 
 import com.selab.auction.error.exception.member.join.DuplicateEmailException;
 import com.selab.auction.error.exception.member.join.DuplicateNicknameException;
-import com.selab.auction.error.exception.member.join.EmailPatternException;
-import com.selab.auction.error.exception.member.join.NotBlankException;
+import com.selab.auction.error.exception.member.join.PasswordCheckFailedException;
 import com.selab.auction.member.dto.MemberSignUpRequestDto;
 import com.selab.auction.member.dto.MemberSignUpResponseDto;
 import com.selab.auction.member.model.entity.Member;
@@ -13,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,6 +24,10 @@ public class MemberSignUpService {
 
     public MemberSignUpResponseDto signUp(MemberSignUpRequestDto newMember) {
         String encodedPassword = passwordEncoder.encode(newMember.getPassword());
+
+        if(!Objects.equals(newMember.getPassword(), newMember.getCheckPassword())) {
+            throw new PasswordCheckFailedException();
+        }
 
         Member member = Member.builder()
                 .email(newMember.getEmail())
@@ -56,6 +60,7 @@ public class MemberSignUpService {
                 .sex(member.getSex())
                 .grade(member.getGrade())
                 .state(member.getState())
+                .role(member.getRole())
                 .build();
 
         return savedDto;

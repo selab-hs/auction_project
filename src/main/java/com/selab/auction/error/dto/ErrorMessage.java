@@ -15,6 +15,7 @@ public enum ErrorMessage {
     NOT_BLANK(HttpStatus.BAD_REQUEST,"필수값이 누락되었습니다."),
     EMAIL_PATTERN(HttpStatus.BAD_REQUEST, "이메일 형식이 아닙니다."),
     REGEXP_PATTERN(HttpStatus.BAD_REQUEST, "값 형식이 다릅니다."),
+    PASSWORD_CHECK_FAILED(HttpStatus.BAD_REQUEST, "비밀번호가 다릅니다."),
 
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 이메일이 존재합니다."),
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다.")
