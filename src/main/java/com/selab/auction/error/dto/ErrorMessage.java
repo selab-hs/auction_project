@@ -19,6 +19,8 @@ public enum ErrorMessage {
 
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 이메일이 존재합니다."),
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다.")
+
+    DELETE_ITEM(HttpStatus.NOT_FOUND, "삭제된 상품입니다"),
     ;
 
     private final HttpStatus status;
