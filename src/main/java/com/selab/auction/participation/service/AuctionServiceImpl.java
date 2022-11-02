@@ -1,8 +1,11 @@
 package com.selab.auction.participation.service;
 
-import com.selab.auction.error.exception.auction.WrongRequestPrice;
-import com.selab.auction.item.model.dto.ItemResponse;
+import com.selab.auction.error.exception.auction.CompletedAuctionException;
+import com.selab.auction.error.exception.auction.WrongRequestPriceException;
+import com.selab.auction.error.exception.item.WrongItemStateException;
 import com.selab.auction.item.model.entity.Auction;
+import com.selab.auction.item.model.entity.Item;
+import com.selab.auction.item.model.vo.ItemState;
 import com.selab.auction.item.service.ItemService;
 import com.selab.auction.participation.model.dto.CreateAuctionDto;
 import com.selab.auction.participation.model.dto.AuctionResponseDto;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,33 +25,42 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     @Transactional
     public AuctionResponseDto participateAuction(CreateAuctionDto createAuctionDto) {
-        ItemResponse item = itemService.getItemById(createAuctionDto.getItemId());
+        Item item = itemService.getItemEntityById(createAuctionDto.getItemId());
 
-        Optional<Auction> auction = auctionRepository.findByItemId(item.getId()).stream()
-                .max(Comparator.comparing(Auction::getAuctionPrice));
-
-        if(auction.isPresent()){
-            if(validateItemPrice(createAuctionDto.getRequestPrice(), auction.get().getAuctionPrice(), item.getPrice())){
-                Auction response = auctionRepository.save(createAuctionDto.toEntity());
-                return response.toResponseDto();
-            }
-
-            throw new WrongRequestPrice();
+        if(item.getState().equals(ItemState.ACTIVE)){
+            return validateFirstItemPrice(createAuctionDto, item);
         }
 
-        if(validateFirstItemPrice(createAuctionDto.getRequestPrice(), item.getPrice())){
+        if(item.getState().equals(ItemState.PROGRESS)) {
+            return validateItemPrice(createAuctionDto, item);
+        }
+
+        if(item.getState().equals(ItemState.COMPLETE)) {
+            throw new CompletedAuctionException();
+        }
+
+        throw new WrongItemStateException();
+    }
+
+    private AuctionResponseDto validateItemPrice(CreateAuctionDto createAuctionDto, Item item){
+        Auction response = auctionRepository.findByItemId(item.getId()).stream()
+                .max(Comparator.comparing(Auction::getAuctionPrice))
+                .filter((auction)->createAuctionDto.getRequestPrice() > (auction.getAuctionPrice() + item.getPrice() * 0.01))
+                .orElseThrow(WrongRequestPriceException::new);
+
+        auctionRepository.save(response);
+
+        return response.toResponseDto();
+    }
+
+    private AuctionResponseDto validateFirstItemPrice(CreateAuctionDto createAuctionDto, Item item){
+        if(createAuctionDto.getRequestPrice() >= item.getPrice()){
             Auction response = auctionRepository.save(createAuctionDto.toEntity());
+            item.updateState(ItemState.PROGRESS);
+
             return response.toResponseDto();
         }
 
-        throw new WrongRequestPrice();
-    }
-
-    private boolean validateItemPrice(long requestPrice, long auctionPrice, long firstItemPrice){
-        return requestPrice > (auctionPrice + firstItemPrice * 0.01);
-    }
-
-    private boolean validateFirstItemPrice(long requestPrice, long firstItemPrice){
-        return requestPrice >= firstItemPrice;
+        throw new WrongRequestPriceException();
     }
 }
