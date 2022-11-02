@@ -12,9 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,7 +22,7 @@ public class MemberSignUpService {
     public MemberSignUpResponseDto signUp(MemberSignUpRequestDto newMember) {
         String encodedPassword = passwordEncoder.encode(newMember.getPassword());
 
-        if(!Objects.equals(newMember.getPassword(), newMember.getCheckPassword())) {
+        if(!newMember.getPassword().equals(newMember.getCheckPassword())) {
             throw new PasswordCheckFailedException();
         }
 
@@ -38,13 +35,11 @@ public class MemberSignUpService {
                 .sex(newMember.getSex())
                 .build();
 
-        Optional<Member> findByEmailMember = memberRepository.findByEmail(member.getEmail());
-        if (findByEmailMember.isPresent()) {
+        if (memberRepository.existsByEmail(member.getEmail())) {
             throw new DuplicateEmailException();
         }
 
-        Optional<Member> findByNicknameMember = memberRepository.findByNickname(member.getNickname());
-        if (findByNicknameMember.isPresent()) {
+        if (memberRepository.existsByNickname(member.getNickname())) {
             throw new DuplicateNicknameException();
         }
 
