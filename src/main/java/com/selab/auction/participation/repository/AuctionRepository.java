@@ -4,9 +4,9 @@ import com.selab.auction.item.model.entity.Auction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
-    Collection<Auction> findByItemId(long itemId);
+    Optional<Auction> findByItemId(long itemId);
 }
