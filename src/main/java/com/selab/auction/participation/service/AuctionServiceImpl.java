@@ -1,6 +1,7 @@
 package com.selab.auction.participation.service;
 
 import com.selab.auction.error.exception.auction.WrongRequestPrice;
+import com.selab.auction.item.model.dto.ItemResponse;
 import com.selab.auction.item.model.entity.Auction;
 import com.selab.auction.item.service.ItemService;
 import com.selab.auction.participation.model.dto.CreateAuctionDto;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +23,9 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     @Transactional
     public AuctionResponseDto participateAuction(CreateAuctionDto createAuctionDto) {
-        var item = itemService.getItemById(createAuctionDto.getItemId());
+        ItemResponse item = itemService.getItemById(createAuctionDto.getItemId());
 
-        var auction = auctionRepository.findByItemId(item.getId()).stream()
+        Optional<Auction> auction = auctionRepository.findByItemId(item.getId()).stream()
                 .max(Comparator.comparing(Auction::getAuctionPrice));
 
         if(auction.isPresent()){

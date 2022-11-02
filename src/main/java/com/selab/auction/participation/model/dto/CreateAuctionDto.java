@@ -5,12 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Positive;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAuctionDto {
+    @Positive
     Long itemId;
+
+    @Positive
     Long memberId;
+
+    @Positive
     Long requestPrice;
 
     public Auction toEntity(){
