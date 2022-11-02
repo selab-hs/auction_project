@@ -1,5 +1,9 @@
 package com.selab.auction.member.service;
 
+import com.selab.auction.error.exception.member.join.DuplicateEmailException;
+import com.selab.auction.error.exception.member.join.DuplicateNicknameException;
+import com.selab.auction.error.exception.member.join.EmailPatternException;
+import com.selab.auction.error.exception.member.join.NotBlankException;
 import com.selab.auction.member.dto.MemberSignUpRequestDto;
 import com.selab.auction.member.dto.MemberSignUpResponseDto;
 import com.selab.auction.member.model.entity.Member;
@@ -8,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,28 +25,38 @@ public class MemberSignUpService {
     public MemberSignUpResponseDto signUp(MemberSignUpRequestDto newMember) {
         String encodedPassword = passwordEncoder.encode(newMember.getPassword());
 
-        Member member = new Member(
-                newMember.getEmail(),
-                encodedPassword,
-                newMember.getNickname(),
-                newMember.getAddress(),
-                newMember.getPhone(),
-                newMember.getSex()
-        );
+        Member member = Member.builder()
+                .email(newMember.getEmail())
+                .password(encodedPassword)
+                .nickname(newMember.getNickname())
+                .address(newMember.getAddress())
+                .phone(newMember.getPhone())
+                .sex(newMember.getSex())
+                .build();
+
+        Optional<Member> findByEmailMember = memberRepository.findByEmail(member.getEmail());
+        if (findByEmailMember.isPresent()) {
+            throw new DuplicateEmailException();
+        }
+
+        Optional<Member> findByNicknameMember = memberRepository.findByNickname(member.getNickname());
+        if (findByNicknameMember.isPresent()) {
+            throw new DuplicateNicknameException();
+        }
 
         memberRepository.save(member);
 
-        MemberSignUpResponseDto savedDto = new MemberSignUpResponseDto(
-                member.getId(),
-                member.getEmail(),
-                member.getPassword(),
-                member.getNickname(),
-                member.getAddress(),
-                member.getPhone(),
-                member.getSex(),
-                member.getGrade(),
-                member.getState()
-        );
+        MemberSignUpResponseDto savedDto = MemberSignUpResponseDto.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .nickname(member.getNickname())
+                .address(member.getAddress())
+                .phone(member.getPhone())
+                .sex(member.getSex())
+                .grade(member.getGrade())
+                .state(member.getState())
+                .build();
 
         return savedDto;
     }
