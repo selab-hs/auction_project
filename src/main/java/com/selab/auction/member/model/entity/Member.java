@@ -1,14 +1,11 @@
 package com.selab.auction.member.model.entity;
 
 import com.selab.auction.common.BaseEntity;
-import com.selab.auction.member.vo.MemberRole;
-import com.selab.auction.member.vo.MemberState;
+import com.selab.auction.member.model.vo.MemberRole;
+import com.selab.auction.member.model.vo.MemberState;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

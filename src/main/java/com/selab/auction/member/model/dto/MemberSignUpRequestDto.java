@@ -1,4 +1,4 @@
-package com.selab.auction.member.dto;
+package com.selab.auction.member.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.selab.auction.member.vo;
+package com.selab.auction.member.model.vo;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
