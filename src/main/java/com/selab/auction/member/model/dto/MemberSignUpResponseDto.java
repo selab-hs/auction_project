@@ -1,7 +1,7 @@
-package com.selab.auction.member.dto;
+package com.selab.auction.member.model.dto;
 
-import com.selab.auction.member.vo.MemberRole;
-import com.selab.auction.member.vo.MemberState;
+import com.selab.auction.member.model.vo.MemberRole;
+import com.selab.auction.member.model.vo.MemberState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
