@@ -12,7 +12,9 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "auction")
+@Table(indexes = {
+        @Index(name="auction_index", columnList = "id")
+        }, name="auction")
 public class AuctionProgress extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
