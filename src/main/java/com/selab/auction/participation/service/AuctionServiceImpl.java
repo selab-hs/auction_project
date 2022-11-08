@@ -7,6 +7,7 @@ import com.selab.auction.item.model.entity.Auction;
 import com.selab.auction.item.model.entity.Item;
 import com.selab.auction.item.model.vo.ItemState;
 import com.selab.auction.item.service.ItemService;
+import com.selab.auction.member.service.MemberFindService;
 import com.selab.auction.participation.model.dto.CreateAuctionDto;
 import com.selab.auction.participation.model.dto.AuctionResponseDto;
 import com.selab.auction.participation.repository.AuctionRepository;
@@ -20,11 +21,13 @@ import java.util.Comparator;
 @RequiredArgsConstructor
 public class AuctionServiceImpl implements AuctionService{
     private final AuctionRepository auctionRepository;
+    private final MemberFindService memberFindService;
     private final ItemService itemService;
 
     @Override
     @Transactional
     public AuctionResponseDto participateAuction(CreateAuctionDto createAuctionDto) {
+        memberFindService.findById(createAuctionDto.getMemberId());
         Item item = itemService.getItemEntityById(createAuctionDto.getItemId());
 
         if(item.getState().equals(ItemState.ACTIVE)){
