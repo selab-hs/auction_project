@@ -2,6 +2,35 @@ plugins {
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
+	id 'jacoco'
+}
+
+jacoco {
+	// JaCoCo 버전
+	toolVersion = '0.8.5'
+
+//  테스트결과 리포트를 저장할 경로 변경하는 방법
+//  default는 "$/jacoco"
+//  reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+test {
+	jacoco {
+		destinationFile = file("$buildDir/jacoco/jacoco.exec")
+	}
+}
+
+jacocoTestReport {
+	reports {
+		// 원하는 리포트를 켜고 끌 수 있습니다.
+		html.enabled true
+		xml.enabled false
+		csv.enabled false
+
+//  각 리포트 타입마다 리포트 저장 경로를 설정할 수 있습니다.
+// html.destination file("src/jacoco/jacoco.html")
+// xml.destination file("src/jacoco/jacoco.xml")
+	}
 }
 
 group = 'com.selab'
@@ -28,10 +57,13 @@ dependencies {
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.projectlombok:lombok:1.18.22'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'com.github.maricn:logback-slack-appender:1.6.1'
 
 /*	//p6spy 적용
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
