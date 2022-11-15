@@ -7,15 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(name="auction_index", columnList = "id")
+}, name="auction")
 public class Auction extends BaseEntity {
 
     @Id
@@ -32,10 +31,10 @@ public class Auction extends BaseEntity {
     private Long auctionPrice;
 
     @Builder
-    public Auction(long itemId, long memberId, long requestPrice){
+    public Auction(long itemId, long memberId, long auctionPrice){
         this.itemId = itemId;
         this.memberId = memberId;
-        this.auctionPrice = requestPrice;
+        this.auctionPrice = auctionPrice;
     }
 
     public AuctionResponseDto toResponseDto(){

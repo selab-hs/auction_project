@@ -12,7 +12,8 @@ public enum ErrorMessage {
 
     DELETE_ITEM(HttpStatus.NOT_FOUND, "삭제된 상품입니다"),
     WRONG_ITEM_STATE(HttpStatus.BAD_REQUEST, "잘못된 아이템 정보입니다"),
-    WRONG_REQUEST_PRICE(HttpStatus.BAD_REQUEST, "잘못된 경매 요청가격입니다"),
+    WRONG_AUCTION_ID(HttpStatus.BAD_REQUEST, "잘못된 경매 번호 요청입니다"),
+    WRONG_REQUEST_PRICE(HttpStatus.NOT_FOUND, "잘못된 경매 요청가격입니다"),
     COMPLETED_AUCTION(HttpStatus.BAD_REQUEST, "이미 경매가 끝난 상품입니다"),
 
     NOT_BLANK(HttpStatus.BAD_REQUEST,"필수값이 누락되었습니다."),

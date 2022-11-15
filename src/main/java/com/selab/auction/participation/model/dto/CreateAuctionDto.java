@@ -24,7 +24,7 @@ public class CreateAuctionDto {
         return Auction.builder()
                 .memberId(memberId)
                 .itemId(itemId)
-                .requestPrice(requestPrice)
+                .auctionPrice(requestPrice)
                 .build();
     }
 }

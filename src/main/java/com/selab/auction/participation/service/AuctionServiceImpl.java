@@ -1,6 +1,7 @@
 package com.selab.auction.participation.service;
 
 import com.selab.auction.error.exception.auction.CompletedAuctionException;
+import com.selab.auction.error.exception.auction.WrongAuctionIdException;
 import com.selab.auction.error.exception.auction.WrongRequestPriceException;
 import com.selab.auction.error.exception.item.WrongItemStateException;
 import com.selab.auction.item.model.entity.Auction;
@@ -8,8 +9,10 @@ import com.selab.auction.item.model.entity.Item;
 import com.selab.auction.item.model.vo.ItemState;
 import com.selab.auction.item.service.ItemService;
 import com.selab.auction.member.service.MemberFindService;
+import com.selab.auction.participation.model.dto.AuctionBuyCommentResponseDto;
 import com.selab.auction.participation.model.dto.CreateAuctionDto;
 import com.selab.auction.participation.model.dto.AuctionResponseDto;
+import com.selab.auction.participation.model.dto.CreateBuyCommentDto;
 import com.selab.auction.participation.repository.AuctionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,11 @@ public class AuctionServiceImpl implements AuctionService{
         }
 
         throw new WrongItemStateException();
+    }
+
+    @Override
+    public AuctionResponseDto searchAuctionHistoryById(long id) {
+        return auctionRepository.findById(id).orElseThrow(WrongAuctionIdException::new).toResponseDto();
     }
 
     private AuctionResponseDto validateItemPrice(CreateAuctionDto createAuctionDto, Item item){
