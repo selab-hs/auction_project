@@ -34,10 +34,10 @@ public class AuctionSaleComment extends BaseEntity {
     private String comment;
 
     @Column
-    private Long grade;
+    private Double grade;
 
     @Builder
-    public AuctionSaleComment(long itemId, long buyMemberId, long saleMemberId, String comment, long grade){
+    public AuctionSaleComment(long itemId, long buyMemberId, long saleMemberId, String comment, double grade){
         this.itemId = itemId;
         this.buyMemberId = buyMemberId;
         this.saleMemberId = saleMemberId;
