@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberUpdateGradeService {
+public class MemberGradeUpdateService {
     private final MemberRepository memberRepository;
 
     public void updateMemberGrade(long memberId, double grade){

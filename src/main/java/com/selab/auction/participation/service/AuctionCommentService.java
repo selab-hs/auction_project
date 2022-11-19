@@ -1,7 +1,7 @@
 package com.selab.auction.participation.service;
 
 import com.selab.auction.item.service.ItemService;
-import com.selab.auction.member.service.MemberUpdateGradeService;
+import com.selab.auction.member.service.MemberGradeUpdateService;
 import com.selab.auction.participation.model.dto.AuctionBuyCommentResponseDto;
 import com.selab.auction.participation.model.dto.AuctionSaleCommentResponseDto;
 import com.selab.auction.participation.model.dto.CreateBuyCommentDto;
@@ -22,14 +22,14 @@ public class AuctionCommentService{
     private final AuctionBuyCommentRepository buyRepository;
     private final AuctionSaleCommentRepository saleRepository;
     private final ItemService itemService;
-    private final MemberUpdateGradeService memberUpdateGradeService;
+    private final MemberGradeUpdateService memberGradeUpdateService;
 
     @Transactional
     public AuctionBuyCommentResponseDto registerBuyComment(CreateBuyCommentDto commentDto) {
         long memberId = itemService.getItemEntityById(commentDto.getItemId()).getMemberId();
         AuctionBuyComment auctionBuyComment = buyRepository.saveAndFlush(commentDto.toEntity(memberId));
 
-        memberUpdateGradeService.updateMemberGrade(memberId, calculationMemberGrade(memberId));
+        memberGradeUpdateService.updateMemberGrade(memberId, calculationMemberGrade(memberId));
 
         return auctionBuyComment.toResponseDto();
     }
@@ -38,7 +38,7 @@ public class AuctionCommentService{
     public AuctionSaleCommentResponseDto registerSaleComment(CreateSaleCommentDto commentDto) {
         AuctionSaleComment auctionSaleComment = saleRepository.saveAndFlush(commentDto.toEntity());
 
-        memberUpdateGradeService.updateMemberGrade(auctionSaleComment.getSaleMemberId(), calculationMemberGrade(auctionSaleComment.getSaleMemberId()));
+        memberGradeUpdateService.updateMemberGrade(auctionSaleComment.getSaleMemberId(), calculationMemberGrade(auctionSaleComment.getSaleMemberId()));
 
         return auctionSaleComment.toResponseDto();
     }
