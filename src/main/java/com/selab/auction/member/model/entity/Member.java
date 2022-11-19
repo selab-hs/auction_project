@@ -51,8 +51,12 @@ public class Member extends BaseEntity {
         this.address = address;
         this.phone = phone;
         this.sex = sex;
-        this.grade = 0.0;
+        this.grade = 0D;
         this.state = MemberState.ACTIVE;
         this.role = MemberRole.USER;
+    }
+
+    public void updateMemberGrade(double grade){
+        this.grade = grade;
     }
 }

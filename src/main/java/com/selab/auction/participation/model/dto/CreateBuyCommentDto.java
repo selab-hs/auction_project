@@ -21,7 +21,8 @@ public class CreateBuyCommentDto {
     String comment;
 
     @Positive
-    Long grade;
+    @Max(5)
+    Double grade;
 
     public AuctionBuyComment toEntity(long saleMemberId){
         return AuctionBuyComment.builder()

@@ -12,11 +12,11 @@ public class AuctionSaleCommentResponseDto {
     Long buyMemberId;
     Long saleMemberId;
     String comment;
-    Long grade;
+    Double grade;
 
 
     @Builder
-    public AuctionSaleCommentResponseDto(long id, long itemId, long buyMemberId, long saleMemberId, String comment, long grade){
+    public AuctionSaleCommentResponseDto(long id, long itemId, long buyMemberId, long saleMemberId, String comment, double grade){
         this.id = id;
         this.itemId = itemId;
         this.buyMemberId = buyMemberId;

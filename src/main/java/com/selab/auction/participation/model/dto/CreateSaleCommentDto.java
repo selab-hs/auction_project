@@ -19,7 +19,8 @@ public class CreateSaleCommentDto {
     Long saleMemberId;
 
     @Positive
-    Long grade;
+    @Max(5)
+    Double grade;
 
     @Positive
     Long itemId;
