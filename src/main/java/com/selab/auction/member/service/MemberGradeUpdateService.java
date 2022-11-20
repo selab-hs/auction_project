@@ -1,6 +1,6 @@
 package com.selab.auction.member.service;
 
-import com.selab.auction.error.exception.member.find.NotExistMemberException;
+import com.selab.auction.error.exception.member.NotExistMemberException;
 import com.selab.auction.member.model.entity.Member;
 import com.selab.auction.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
