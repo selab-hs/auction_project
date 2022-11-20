@@ -1,6 +1,6 @@
 package com.selab.auction.member.controller;
 
-import com.selab.auction.common.dto.SwaggerNote;
+import com.selab.auction.common.dto.ResponseDto;
 import com.selab.auction.member.model.dto.MemberFindResponseDto;
 import com.selab.auction.member.model.dto.MemberSignUpRequestDto;
 import com.selab.auction.member.model.dto.MemberSignUpResponseDto;
@@ -8,12 +8,17 @@ import com.selab.auction.member.service.MemberFindService;
 import com.selab.auction.member.service.MemberSignUpService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+// TODO : SWAGGER 작용하기
 @RestController
 @RequestMapping("/api/v1/auction")
 @RequiredArgsConstructor
@@ -24,14 +29,15 @@ public class MemberController {
     @PostMapping("/sign-up")
     public ResponseEntity<MemberSignUpResponseDto> signUp(@Valid @RequestBody MemberSignUpRequestDto newMember) {
         MemberSignUpResponseDto member = memberSignUpService.signUp(newMember);
-        return new ResponseEntity<>(member, HttpStatus.CREATED);
+
+        return ResponseDto.created(member);
     }
 
     @GetMapping("/{memberId}")
     @ApiOperation(value = "회원 정보 조회")
     public ResponseEntity<MemberFindResponseDto> findMember(@PathVariable Long memberId) {
         MemberFindResponseDto findMember = memberFindService.findById(memberId);
-        return ResponseEntity.ok(findMember);
+        return ResponseDto.ok(findMember);
     }
 
 }

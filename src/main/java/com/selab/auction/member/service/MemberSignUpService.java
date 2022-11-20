@@ -44,8 +44,8 @@ public class MemberSignUpService {
         }
 
         memberRepository.save(member);
-
-        MemberSignUpResponseDto savedDto = MemberSignUpResponseDto.builder()
+        
+        return MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())
                 .password(member.getPassword())
@@ -57,7 +57,5 @@ public class MemberSignUpService {
                 .state(member.getState())
                 .role(member.getRole())
                 .build();
-
-        return savedDto;
     }
 }
