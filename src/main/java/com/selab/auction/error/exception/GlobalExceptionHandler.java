@@ -4,11 +4,11 @@ import com.selab.auction.error.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -17,35 +17,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
         log.error("BusinessException : {}", e.getErrorMessage());
-        ErrorResponse errorResponse = ErrorResponse.builder()
+
+        var errorResponse = new ErrorResponse(e.getErrorMessage());
+
+        return ResponseEntity
                 .status(e.getErrorMessage().getStatus())
-                .description(e.getErrorMessage().getDescription())
-                .build();
-        return ResponseEntity.status(e.getErrorMessage().getStatus())
                 .body(errorResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> processValidationError(MethodArgumentNotValidException e) {
-        BindingResult bindingResult = e.getBindingResult();
+        var bindingResult = e.getBindingResult();
 
-        StringBuilder builder = new StringBuilder();
+        var description = bindingResult.getFieldErrors()
+                .stream()
+                .map(fieldError ->
+                        "잘못된 요청 : [" + fieldError.getField() + "](은)는 " + fieldError.getDefaultMessage() + " 입력된 값: [" + fieldError.getRejectedValue() + "]"
+                ).collect(Collectors.joining());
 
-        for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            builder.append("잘못된 요청 : [");
-            builder.append(fieldError.getField());
-            builder.append("](은)는 ");
-            builder.append(fieldError.getDefaultMessage());
-            builder.append(" 입력된 값: [");
-            builder.append(fieldError.getRejectedValue());
-            builder.append("]");
-        }
+        var errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, description);
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
+        return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .description(builder.toString())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+                .body(errorResponse);
     }
 }

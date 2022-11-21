@@ -1,14 +1,13 @@
 package com.selab.auction.member.service;
 
-import com.selab.auction.error.exception.member.join.DuplicateEmailException;
-import com.selab.auction.error.exception.member.join.DuplicateNicknameException;
-import com.selab.auction.error.exception.member.join.PasswordCheckFailedException;
+import com.selab.auction.error.exception.member.DuplicateEmailException;
+import com.selab.auction.error.exception.member.DuplicateNicknameException;
+import com.selab.auction.error.exception.member.PasswordCheckFailedException;
 import com.selab.auction.member.model.dto.MemberSignUpRequestDto;
 import com.selab.auction.member.model.dto.MemberSignUpResponseDto;
 import com.selab.auction.member.model.entity.Member;
 import com.selab.auction.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,8 +44,8 @@ public class MemberSignUpService {
         }
 
         memberRepository.save(member);
-
-        MemberSignUpResponseDto savedDto = MemberSignUpResponseDto.builder()
+        
+        return MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())
                 .password(member.getPassword())
@@ -58,7 +57,5 @@ public class MemberSignUpService {
                 .state(member.getState())
                 .role(member.getRole())
                 .build();
-
-        return savedDto;
     }
 }

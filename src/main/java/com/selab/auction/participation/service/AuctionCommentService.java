@@ -16,9 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+// TODO : 코드 리펙토링 필요
 @Service
 @RequiredArgsConstructor
-public class AuctionCommentService{
+public class AuctionCommentService {
     private final AuctionBuyCommentRepository buyRepository;
     private final AuctionSaleCommentRepository saleRepository;
     private final ItemService itemService;
@@ -44,14 +45,14 @@ public class AuctionCommentService{
     }
 
     @Transactional(readOnly = true)
-    public Double calculationMemberGrade(long memberId){
-        List<AuctionBuyComment> searchByBuyMemberId =  buyRepository.findByBuyMemberId(memberId);
-        List<AuctionSaleComment> searchBySaleMemberId =  saleRepository.findBySaleMemberId(memberId);
+    public Double calculationMemberGrade(long memberId) {
+        List<AuctionBuyComment> searchByBuyMemberId = buyRepository.findByBuyMemberId(memberId);
+        List<AuctionSaleComment> searchBySaleMemberId = saleRepository.findBySaleMemberId(memberId);
 
-        if(searchByBuyMemberId.size()==0 && searchBySaleMemberId.size()==0)
+        if (searchByBuyMemberId.size() == 0 && searchBySaleMemberId.size() == 0)
             return 0D;
 
-        double buyMemberGradeSum =  searchByBuyMemberId.stream()
+        double buyMemberGradeSum = searchByBuyMemberId.stream()
                 .mapToDouble(AuctionBuyComment::getGrade)
                 .sum();
 

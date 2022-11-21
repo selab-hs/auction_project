@@ -1,16 +1,25 @@
 package com.selab.auction.item.controller;
 
+import com.selab.auction.common.dto.PageDto;
 import com.selab.auction.common.dto.ResponseDto;
 import com.selab.auction.common.dto.SwaggerNote;
 import com.selab.auction.item.model.dto.ItemCreateRequest;
 import com.selab.auction.item.model.dto.ItemResponse;
 import com.selab.auction.item.model.dto.ItemUpdateRequest;
-import com.selab.auction.item.model.dto.ItemsResponse;
 import com.selab.auction.item.service.ItemService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,9 +30,11 @@ public class ItemController {
 
     @GetMapping
     @ApiOperation(value = "모든 상품 목록 조회", notes = SwaggerNote.ITEM_READ_ALL_NOTE)
-    public ResponseEntity<ItemsResponse> getAllItems() {
-        ItemsResponse items = itemService.getAllItems();
-        return ResponseDto.ok(items);
+    public ResponseEntity<Page<ItemResponse>> getAllItems(
+            @PageableDefault(page = 0, size = 20) Pageable pageable
+    ) {
+        var items = itemService.getAllItems(pageable);
+        return PageDto.ok(items);
     }
 
     @GetMapping("/{id}")
