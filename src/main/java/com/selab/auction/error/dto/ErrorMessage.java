@@ -16,7 +16,7 @@ public enum ErrorMessage {
     WRONG_REQUEST_PRICE(HttpStatus.NOT_FOUND, "잘못된 경매 요청가격입니다"),
     COMPLETED_AUCTION(HttpStatus.BAD_REQUEST, "이미 경매가 끝난 상품입니다"),
 
-    NOT_BLANK(HttpStatus.BAD_REQUEST,"필수값이 누락되었습니다."),
+    NOT_BLANK(HttpStatus.BAD_REQUEST, "필수값이 누락되었습니다."),
     EMAIL_PATTERN(HttpStatus.BAD_REQUEST, "이메일 형식이 아닙니다."),
     REGEXP_PATTERN(HttpStatus.BAD_REQUEST, "값 형식이 다릅니다."),
     PASSWORD_CHECK_FAILED(HttpStatus.BAD_REQUEST, "비밀번호가 다릅니다."),

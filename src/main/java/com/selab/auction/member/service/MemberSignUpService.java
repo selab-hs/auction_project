@@ -1,8 +1,8 @@
 package com.selab.auction.member.service;
 
-import com.selab.auction.error.exception.member.signup.DuplicateEmailException;
-import com.selab.auction.error.exception.member.signup.DuplicateNicknameException;
-import com.selab.auction.error.exception.member.signup.PasswordCheckFailedException;
+import com.selab.auction.error.exception.member.DuplicateEmailException;
+import com.selab.auction.error.exception.member.DuplicateNicknameException;
+import com.selab.auction.error.exception.member.PasswordCheckFailedException;
 import com.selab.auction.member.model.dto.MemberSignUpRequestDto;
 import com.selab.auction.member.model.dto.MemberSignUpResponseDto;
 import com.selab.auction.member.model.entity.Member;
@@ -44,7 +44,6 @@ public class MemberSignUpService {
         }
 
         memberRepository.save(member);
-
         return MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())

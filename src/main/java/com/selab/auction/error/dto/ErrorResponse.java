@@ -11,6 +11,11 @@ public class ErrorResponse {
     private HttpStatus status;
     private String description;
 
+    public ErrorResponse(ErrorMessage message) {
+        this.status = message.getStatus();
+        this.description = message.getDescription();
+    }
+
     @Builder
     public ErrorResponse(HttpStatus status, String description) {
         this.status = status;
