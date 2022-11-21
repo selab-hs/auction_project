@@ -44,7 +44,7 @@ public class RedisConfig {
      **/
     @Bean
     @ConditionalOnMissingBean(name = "auctionCacheManager")
-    public CacheManager beerAirCacheManager() {
+    public CacheManager auctionCacheManager() {
         var stringSerializationPair = RedisSerializationContext
                 .SerializationPair.fromSerializer(new StringRedisSerializer());
         var objectSerializationPair = RedisSerializationContext
