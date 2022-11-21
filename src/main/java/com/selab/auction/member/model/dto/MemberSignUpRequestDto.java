@@ -37,5 +37,5 @@ public class MemberSignUpRequestDto {
     private String phone;
 
     @NotBlank(message = "성별은 필수 입력 값입니다.")
-    private String sex;
+    private String gender;
 }

@@ -32,7 +32,7 @@ public class Member extends BaseEntity {
     private String phone;
 
     @Column(length = 20, nullable = false)
-    private String sex;
+    private String gender;
 
     @Column
     private Double grade;
@@ -44,13 +44,13 @@ public class Member extends BaseEntity {
     private MemberRole role;
 
     @Builder
-    public Member(String email, String password, String nickname, String address, String phone, String sex) {
+    public Member(String email, String password, String nickname, String address, String phone, String gender) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.address = address;
         this.phone = phone;
-        this.sex = sex;
+        this.gender = gender;
         this.grade = 0D;
         this.state = MemberState.ACTIVE;
         this.role = MemberRole.USER;

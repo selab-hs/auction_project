@@ -1,8 +1,8 @@
 package com.selab.auction.member.signin.service;
 
-import com.selab.auction.error.exception.member.find.NotExistMemberException;
+import com.selab.auction.error.exception.member.NotExistMemberException;
+import com.selab.auction.error.exception.member.PasswordCheckFailedException;
 import com.selab.auction.error.exception.member.signin.InacitveMemberException;
-import com.selab.auction.error.exception.member.signup.PasswordCheckFailedException;
 import com.selab.auction.member.signin.security.TokenProvider;
 import com.selab.auction.member.model.dto.MemberSignInRequestDto;
 import com.selab.auction.member.model.entity.Member;

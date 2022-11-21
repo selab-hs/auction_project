@@ -32,7 +32,7 @@ public class MemberSignUpService {
                 .nickname(newMember.getNickname())
                 .address(newMember.getAddress())
                 .phone(newMember.getPhone())
-                .sex(newMember.getSex())
+                .gender(newMember.getGender())
                 .build();
 
         if (memberRepository.existsByEmail(member.getEmail())) {
@@ -44,6 +44,7 @@ public class MemberSignUpService {
         }
 
         memberRepository.save(member);
+
         return MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())
@@ -51,7 +52,7 @@ public class MemberSignUpService {
                 .nickname(member.getNickname())
                 .address(member.getAddress())
                 .phone(member.getPhone())
-                .sex(member.getSex())
+                .gender(member.getGender())
                 .grade(member.getGrade())
                 .state(member.getState())
                 .role(member.getRole())
