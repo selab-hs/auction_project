@@ -8,6 +8,9 @@ import com.selab.auction.member.service.MemberFindService;
 import com.selab.auction.member.service.MemberSignUpService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+
+@Slf4j
 // TODO : SWAGGER 작용하기
 @RestController
 @RequestMapping("/api/v1/auction")
@@ -25,6 +30,8 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberSignUpService memberSignUpService;
     private final MemberFindService memberFindService;
+    private final MemberSignInService userService;
+
 
     @PostMapping("/sign-up")
     public ResponseEntity<MemberSignUpResponseDto> signUp(@Valid @RequestBody MemberSignUpRequestDto newMember) {
@@ -40,4 +47,10 @@ public class MemberController {
         return ResponseDto.ok(findMember);
     }
 
+    @PostMapping("/sign-in")
+    public ResponseEntity<?> signIn(@Valid @RequestBody MemberSignInRequestDto memberSignInRequestDto) {
+        String token = userService.handleSignIn(memberSignInRequestDto);
+        log.info(token);
+        return ResponseEntity.ok(new MemberSignInResponseDto(token));
+    }
 }

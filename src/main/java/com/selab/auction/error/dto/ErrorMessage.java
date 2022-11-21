@@ -25,6 +25,7 @@ public enum ErrorMessage {
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다."),
 
     NOT_EXIST_MEMBER(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
+    INACTIVE_MEMBER(HttpStatus.UNAUTHORIZED, "휴면 회원입니다."),
     ;
 
     private final HttpStatus status;

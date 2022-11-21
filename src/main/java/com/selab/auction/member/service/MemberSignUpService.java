@@ -44,7 +44,6 @@ public class MemberSignUpService {
         }
 
         memberRepository.save(member);
-        
         return MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())
