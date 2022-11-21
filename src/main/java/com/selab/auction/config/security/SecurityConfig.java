@@ -56,12 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new AuthEntryPoint())
         .and()
                 .authorizeRequests()
-                    .antMatchers("/","/error","/favicon.ico", "/**/*.png", "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js").permitAll()
 /*                .antMatchers("/api/v1/auction/sign-up").permitAll()
                 .antMatchers("/api/v1/auction/sign-in").permitAll()
                 .antMatchers("/api/v1/auction/{memberId}").access("hasRole('USER')")*/

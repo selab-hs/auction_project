@@ -1,6 +1,7 @@
 package com.selab.auction.member.controller;
 
 import com.selab.auction.common.dto.ResponseDto;
+import com.selab.auction.common.dto.SwaggerNote;
 import com.selab.auction.member.model.dto.*;
 import com.selab.auction.member.service.MemberFindService;
 import com.selab.auction.member.service.MemberSignUpService;
@@ -32,6 +33,7 @@ public class MemberController {
 
 
     @PostMapping("/sign-up")
+    @ApiOperation(value = "회원 가입")
     public ResponseEntity<MemberSignUpResponseDto> signUp(@Valid @RequestBody MemberSignUpRequestDto newMember) {
         MemberSignUpResponseDto member = memberSignUpService.signUp(newMember);
 
@@ -46,8 +48,9 @@ public class MemberController {
     }
 
     @PostMapping("/sign-in")
+    @ApiOperation(value = "로그인")
     public ResponseEntity<?> signIn(@Valid @RequestBody MemberSignInRequestDto memberSignInRequestDto) {
-        String token = userService.handleSignIn(memberSignInRequestDto);
+        String token = userService.signIn(memberSignInRequestDto);
         log.info(token);
         return ResponseEntity.ok(new MemberSignInResponseDto(token));
     }

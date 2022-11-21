@@ -21,7 +21,7 @@ public class MemberSignInService {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public String handleSignIn(MemberSignInRequestDto memberSignInRequestDto) {
+    public String signIn(MemberSignInRequestDto memberSignInRequestDto) {
         Member member = memberRepository.findByEmail(memberSignInRequestDto.getEmail()).orElseThrow(NotExistMemberException::new);
 
         if (!passwordEncoder.matches(memberSignInRequestDto.getPassword(), member.getPassword())) {
