@@ -5,7 +5,6 @@ import com.selab.auction.error.exception.item.NotExistItemException;
 import com.selab.auction.item.model.dto.ItemCreateRequest;
 import com.selab.auction.item.model.dto.ItemResponse;
 import com.selab.auction.item.model.dto.ItemUpdateRequest;
-import com.selab.auction.item.model.dto.ItemsResponse;
 import com.selab.auction.item.model.entity.Item;
 import com.selab.auction.item.model.vo.ItemState;
 import com.selab.auction.item.repository.ItemRepository;
@@ -14,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +61,15 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Item getItemEntityById(Long id) {
         return itemRepository.findById(id).orElseThrow(NotExistItemException::new);
+    }
+
+    @Transactional
+    public List<Item> getItemsEntityByItemStateProgress(){
+        return itemRepository.findByState(ItemState.PROGRESS);
+    }
+
+    @Transactional
+    public void updateItemStateToCompleted(Item item){
+        item.updateState(ItemState.COMPLETE);
     }
 }
