@@ -16,5 +16,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Page<Item> findAllByStateNot(Pageable pageable, ItemState state);
 
 
-    List<Item> findByState(ItemState progress);
+    List<Item> findByState(ItemState state);
 }
