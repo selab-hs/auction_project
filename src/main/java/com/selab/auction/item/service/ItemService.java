@@ -63,7 +63,7 @@ public class ItemService {
         return itemRepository.findById(id).orElseThrow(NotExistItemException::new);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Item> getItemsEntityByItemStateProgress(){
         return itemRepository.findByState(ItemState.PROGRESS);
     }
