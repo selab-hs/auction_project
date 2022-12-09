@@ -1,12 +1,7 @@
 package com.selab.auction.participation.controller;
 
 import com.selab.auction.common.dto.ResponseDto;
-import com.selab.auction.participation.model.dto.AuctionBuyCommentResponseDto;
-import com.selab.auction.participation.model.dto.AuctionResponseDto;
-import com.selab.auction.participation.model.dto.AuctionSaleCommentResponseDto;
-import com.selab.auction.participation.model.dto.CreateAuctionDto;
-import com.selab.auction.participation.model.dto.CreateBuyCommentDto;
-import com.selab.auction.participation.model.dto.CreateSaleCommentDto;
+import com.selab.auction.participation.model.dto.*;
 import com.selab.auction.participation.service.AuctionCommentService;
 import com.selab.auction.participation.service.AuctionService;
 import io.swagger.annotations.ApiOperation;
@@ -21,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
-// TODO : REST API에 맞춰서 url 수정하기
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/auction")
+@RequestMapping("api/v1/auction/participation")
 public class AuctionController {
     private final AuctionService auctionService;
     private final AuctionCommentService auctionCommentService;
@@ -33,6 +27,14 @@ public class AuctionController {
     @ApiOperation(value = "경매 참여", notes = "해당 상품 번호와 멤버 번호, 경매 참여 가격 입력받아 경매 참여 진행하기")
     public ResponseEntity<AuctionResponseDto> participateAuction(@RequestBody @Valid CreateAuctionDto createDto) {
         AuctionResponseDto response = auctionService.participateAuction(createDto);
+
+        return ResponseDto.created(response);
+    }
+
+    @PostMapping("/immediate-purchase")
+    @ApiOperation(value = "상품 즉시 구매", notes = "해당 상품 번호와 멤버 번호를 입력받아, 즉시 구매 가격으로 구매 진행하기")
+    public ResponseEntity<AuctionResponseDto> immediatePurchaseItem(@RequestBody @Valid CreateImmediatePurchaseDto createDto) {
+        AuctionResponseDto response = auctionService.immediatePurchaseItem(createDto);
 
         return ResponseDto.created(response);
     }
