@@ -9,14 +9,17 @@ import com.selab.auction.item.model.entity.Item;
 import com.selab.auction.item.model.vo.ItemState;
 import com.selab.auction.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ItemService {
 
@@ -71,5 +74,15 @@ public class ItemService {
     @Transactional
     public void updateItemStateToCompleted(Item item){
         item.updateState(ItemState.COMPLETE);
+    }
+
+    @Transactional
+    public void updateItemStateByScheduling() {
+        getItemsEntityByItemStateProgress().stream()
+                .filter((item) -> LocalDateTime.now().isAfter(
+                        item.getCreatedAt().plusDays(item.getAuctionPeriod())
+                ))
+                .peek((item) -> log.info(item.getId() + "번 아이템 경매 기간 만료"))
+                .forEach(this::updateItemStateToCompleted);
     }
 }
