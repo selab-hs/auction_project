@@ -2,15 +2,20 @@ package com.selab.auction.member.controller;
 
 import com.selab.auction.common.dto.ResponseDto;
 import com.selab.auction.member.model.dto.*;
+import com.selab.auction.member.model.entity.RefreshToken;
 import com.selab.auction.member.service.MemberFindService;
 import com.selab.auction.member.service.MemberSignUpService;
 import com.selab.auction.member.signin.service.MemberSignInService;
+import com.selab.auction.member.signin.service.RefreshTokenService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +34,10 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberSignUpService memberSignUpService;
     private final MemberFindService memberFindService;
-    private final MemberSignInService userService;
+    private final MemberSignInService memberSignInService;
+    private final RefreshTokenService refreshTokenService;
+
+    AuthenticationManager authenticationManager;
 
 
     @PostMapping("/sign-up")
@@ -48,8 +56,19 @@ public class MemberController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<?> signIn(@Valid @RequestBody MemberSignInRequestDto memberSignInRequestDto) {
-        String token = userService.handleSignIn(memberSignInRequestDto);
+        String token = memberSignInService.handleSignIn(memberSignInRequestDto);
         log.info(token);
+
+/*        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        memberSignInRequestDto.getEmail(),
+                        memberSignInRequestDto.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);*/
+
+        //RefreshToken refreshToken = refreshTokenService.createRefreshToken(authentication);
         return ResponseEntity.ok(new MemberSignInResponseDto(token));
     }
 }

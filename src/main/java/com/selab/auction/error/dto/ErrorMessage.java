@@ -27,7 +27,7 @@ public enum ErrorMessage {
     NOT_EXIST_MEMBER(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     INACTIVE_MEMBER(HttpStatus.UNAUTHORIZED, "휴면 회원입니다."),
 
-    INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     ;
 
     private final HttpStatus status;

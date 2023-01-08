@@ -32,7 +32,7 @@ public class MemberSignUpService {
                 .nickname(newMember.getNickname())
                 .address(newMember.getAddress())
                 .phone(newMember.getPhone())
-                .sex(newMember.getSex())
+                .sex(newMember.getGender())
                 .build();
 
         if (memberRepository.existsByEmail(member.getEmail())) {
@@ -51,7 +51,7 @@ public class MemberSignUpService {
                 .nickname(member.getNickname())
                 .address(member.getAddress())
                 .phone(member.getPhone())
-                .sex(member.getSex())
+                .gender(member.getGender())
                 .grade(member.getGrade())
                 .state(member.getState())
                 .role(member.getRole())

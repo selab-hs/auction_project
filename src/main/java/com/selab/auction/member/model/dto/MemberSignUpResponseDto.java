@@ -18,7 +18,7 @@ public class MemberSignUpResponseDto {
     private String nickname;
     private String address;
     private String phone;
-    private String sex;
+    private String gender;
     private Double grade;
     private MemberState state;
     private MemberRole role;

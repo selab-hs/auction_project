@@ -7,17 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class MemberPrincipal implements UserDetails {
-    private String memberId;
+    private Long memberId;
     private String memberPw;
 
-    public MemberPrincipal(String memberId, String memberPw) {
+    public MemberPrincipal(Long memberId, String memberPw) {
         this.memberId = memberId;
         this.memberPw = memberPw;
     }
 
     public static MemberPrincipal create(Member member) {
         return new MemberPrincipal(
-                member.getEmail(),
+                member.getId(),
                 member.getPassword()
         );
     }
@@ -27,6 +27,8 @@ public class MemberPrincipal implements UserDetails {
         return null;
     }
 
+    public Long getMemberId() { return memberId; }
+
     @Override
     public String getPassword() {
         return memberPw;
@@ -34,7 +36,7 @@ public class MemberPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return memberId;
+        return getUsername();
     }
 
     @Override

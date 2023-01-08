@@ -32,6 +32,6 @@ public class MemberSignInService {
             throw new InacitveMemberException();
         }
 
-        return tokenProvider.createToken(String.valueOf(memberSignInRequestDto.getEmail()));
+        return tokenProvider.createToken(memberSignInRequestDto.getEmail());
     }
 }

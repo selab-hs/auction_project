@@ -32,7 +32,7 @@ public class Member extends BaseEntity {
     private String phone;
 
     @Column(length = 20, nullable = false)
-    private String sex;
+    private String gender;
 
     @Column
     private Double grade;
@@ -50,7 +50,7 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
         this.address = address;
         this.phone = phone;
-        this.sex = sex;
+        this.gender = sex;
         this.grade = 0D;
         this.state = MemberState.ACTIVE;
         this.role = MemberRole.USER;

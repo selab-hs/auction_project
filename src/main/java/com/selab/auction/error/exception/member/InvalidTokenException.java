@@ -5,6 +5,6 @@ import com.selab.auction.error.exception.BusinessException;
 
 public class InvalidTokenException extends BusinessException {
     public InvalidTokenException() {
-        super(ErrorMessage.INACTIVE_MEMBER);
+        super(ErrorMessage.INVALID_TOKEN);
     }
 }

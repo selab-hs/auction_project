@@ -7,9 +7,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberSignInResponseDto {
     private String accessToken;
-    private String tokenType = "Bearer ";
+    private String refreshToken;
+    private String tokenType = "Bearer";
 
-    public MemberSignInResponseDto(String accessToken) {
+    public MemberSignInResponseDto(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
+    public MemberSignInResponseDto(String token) {
         this.accessToken = accessToken;
     }
 }
