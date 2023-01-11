@@ -48,9 +48,6 @@ public class Member extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "member_role_id"))
     private Set<MemberRole> roles = new HashSet<>();
 
-    /*@Column
-    private MemberRoleName role;*/
-
     @Builder
     public Member(String email, String password, String nickname, String address, String phone, String gender) {
         this.email = email;

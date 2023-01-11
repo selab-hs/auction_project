@@ -1,5 +1,6 @@
 package com.selab.auction.member.auth.service;
 
+import com.selab.auction.error.exception.member.RefreshTokenExpiredException;
 import com.selab.auction.member.model.entity.RefreshToken;
 import com.selab.auction.member.repository.MemberRepository;
 import com.selab.auction.member.repository.RefreshTokenRepository;
@@ -30,6 +31,7 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(Authentication authentication) {
         MemberPrincipal memberPrincipal = (MemberPrincipal) authentication.getPrincipal();
+
         RefreshToken refreshToken = new RefreshToken();
 
         refreshToken.setMember(memberRepository.findById(memberPrincipal.getMemberId()).get());
@@ -44,6 +46,7 @@ public class RefreshTokenService {
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
         if (refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(refreshToken);
+            throw new RefreshTokenExpiredException();
         }
 
         return refreshToken;

@@ -28,6 +28,7 @@ public enum ErrorMessage {
     INACTIVE_MEMBER(HttpStatus.UNAUTHORIZED, "휴면 회원입니다."),
 
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.FORBIDDEN, "리프레시 토큰이 만료되었습니다."),
     ;
 
     private final HttpStatus status;
