@@ -1,9 +1,9 @@
-package com.selab.auction.member.signin.service;
+package com.selab.auction.member.auth.service;
 
 import com.selab.auction.error.exception.member.NotExistMemberException;
 import com.selab.auction.error.exception.member.PasswordCheckFailedException;
 import com.selab.auction.error.exception.member.InacitveMemberException;
-import com.selab.auction.member.signin.security.TokenProvider;
+import com.selab.auction.member.auth.token.TokenProvider;
 import com.selab.auction.member.model.dto.MemberSignInRequestDto;
 import com.selab.auction.member.model.entity.Member;
 import com.selab.auction.member.model.vo.MemberState;
@@ -21,7 +21,7 @@ public class MemberSignInService {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public String handleSignIn(MemberSignInRequestDto memberSignInRequestDto) {
+/*    public String handleSignIn(MemberSignInRequestDto memberSignInRequestDto) {
         Member member = memberRepository.findByEmail(memberSignInRequestDto.getEmail()).orElseThrow(NotExistMemberException::new);
 
         if (!passwordEncoder.matches(memberSignInRequestDto.getPassword(), member.getPassword())) {
@@ -32,6 +32,6 @@ public class MemberSignInService {
             throw new InacitveMemberException();
         }
 
-        return tokenProvider.createToken(memberSignInRequestDto.getEmail());
-    }
+        return tokenProvider.generateToken(memberSignInRequestDto.getEmail());
+    }*/
 }

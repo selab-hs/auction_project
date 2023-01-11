@@ -15,7 +15,7 @@ public class MemberSignInResponseDto {
         this.refreshToken = refreshToken;
     }
 
-    public MemberSignInResponseDto(String token) {
+    public MemberSignInResponseDto(String accessToken) {
         this.accessToken = accessToken;
     }
 }

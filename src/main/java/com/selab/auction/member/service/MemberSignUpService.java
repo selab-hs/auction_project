@@ -6,7 +6,10 @@ import com.selab.auction.error.exception.member.PasswordCheckFailedException;
 import com.selab.auction.member.model.dto.MemberSignUpRequestDto;
 import com.selab.auction.member.model.dto.MemberSignUpResponseDto;
 import com.selab.auction.member.model.entity.Member;
+import com.selab.auction.member.model.entity.MemberRole;
+import com.selab.auction.member.model.vo.MemberRoleName;
 import com.selab.auction.member.repository.MemberRepository;
+import com.selab.auction.member.repository.MemberRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberSignUpService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberRoleRepository memberRoleRepository;
 
     public MemberSignUpResponseDto signUp(MemberSignUpRequestDto newMember) {
         String encodedPassword = passwordEncoder.encode(newMember.getPassword());
+
+        MemberRole memberRole = memberRoleRepository.findByName(MemberRoleName.USER)
+                .orElseThrow(() -> new RuntimeException("Member Role not set"));
 
         if(!newMember.getPassword().equals(newMember.getCheckPassword())) {
             throw new PasswordCheckFailedException();
@@ -32,7 +39,7 @@ public class MemberSignUpService {
                 .nickname(newMember.getNickname())
                 .address(newMember.getAddress())
                 .phone(newMember.getPhone())
-                .sex(newMember.getGender())
+                .gender(newMember.getGender())
                 .build();
 
         if (memberRepository.existsByEmail(member.getEmail())) {
@@ -44,6 +51,7 @@ public class MemberSignUpService {
         }
 
         memberRepository.save(member);
+
         return MemberSignUpResponseDto.builder()
                 .id(member.getId())
                 .email(member.getEmail())
@@ -54,7 +62,7 @@ public class MemberSignUpService {
                 .gender(member.getGender())
                 .grade(member.getGrade())
                 .state(member.getState())
-                .role(member.getRole())
+                .role(memberRole.getName())
                 .build();
     }
 }

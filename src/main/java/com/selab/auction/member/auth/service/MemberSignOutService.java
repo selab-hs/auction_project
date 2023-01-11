@@ -1,7 +1,7 @@
-package com.selab.auction.member.signin.service;
+package com.selab.auction.member.auth.service;
 
 import com.selab.auction.error.exception.member.InvalidTokenException;
-import com.selab.auction.member.signin.security.TokenProvider;
+import com.selab.auction.member.auth.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberSignOutService {
     private final TokenProvider tokenProvider;
 
-    public void logout(String accessToken, String refreshToken) {
+/*    public void logout(String accessToken, String refreshToken) {
         if (!tokenProvider.validToken(accessToken)) {
             throw new InvalidTokenException();
         }
@@ -22,5 +22,5 @@ public class MemberSignOutService {
 
         Long memberId = Long.parseLong(authentication.getName());
 
-    }
+    }*/
 }

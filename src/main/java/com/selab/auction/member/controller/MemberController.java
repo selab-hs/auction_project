@@ -1,16 +1,17 @@
 package com.selab.auction.member.controller;
 
 import com.selab.auction.common.dto.ResponseDto;
+import com.selab.auction.member.auth.token.TokenProvider;
 import com.selab.auction.member.model.dto.*;
-import com.selab.auction.member.model.entity.RefreshToken;
 import com.selab.auction.member.service.MemberFindService;
 import com.selab.auction.member.service.MemberSignUpService;
-import com.selab.auction.member.signin.service.MemberSignInService;
-import com.selab.auction.member.signin.service.RefreshTokenService;
+import com.selab.auction.member.auth.service.MemberSignInService;
+import com.selab.auction.member.auth.service.RefreshTokenService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,18 +33,19 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/auction")
 @RequiredArgsConstructor
 public class MemberController {
+
     private final MemberSignUpService memberSignUpService;
     private final MemberFindService memberFindService;
     private final MemberSignInService memberSignInService;
     private final RefreshTokenService refreshTokenService;
 
-    AuthenticationManager authenticationManager;
+    @Autowired AuthenticationManager authenticationManager;
+    private final TokenProvider tokenProvider;
 
 
     @PostMapping("/sign-up")
     public ResponseEntity<MemberSignUpResponseDto> signUp(@Valid @RequestBody MemberSignUpRequestDto newMember) {
         MemberSignUpResponseDto member = memberSignUpService.signUp(newMember);
-
         return ResponseDto.created(member);
     }
 
@@ -55,20 +57,19 @@ public class MemberController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<?> signIn(@Valid @RequestBody MemberSignInRequestDto memberSignInRequestDto) {
-        String token = memberSignInService.handleSignIn(memberSignInRequestDto);
-        log.info(token);
-
-/*        Authentication authentication = authenticationManager.authenticate(
+    public ResponseEntity<MemberSignInResponseDto> signIn(
+            @Valid @RequestBody MemberSignInRequestDto memberSignInRequestDto) {
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         memberSignInRequestDto.getEmail(),
                         memberSignInRequestDto.getPassword()
                 )
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);*/
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        //RefreshToken refreshToken = refreshTokenService.createRefreshToken(authentication);
-        return ResponseEntity.ok(new MemberSignInResponseDto(token));
+        String accessToken = tokenProvider.generateToken(authentication);
+
+        return ResponseDto.ok(new MemberSignInResponseDto(accessToken));
     }
 }

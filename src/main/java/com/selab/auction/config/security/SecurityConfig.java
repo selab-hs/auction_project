@@ -1,11 +1,12 @@
 package com.selab.auction.config.security;
 
-import com.selab.auction.member.signin.security.AuthEntryPoint;
-import com.selab.auction.member.signin.security.TokenAuthenticationFilter;
-import com.selab.auction.member.signin.service.CustomMemberDetailService;
+import com.selab.auction.member.auth.token.AuthEntryPoint;
+import com.selab.auction.member.auth.token.TokenAuthenticationFilter;
+import com.selab.auction.member.auth.service.CustomMemberDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +25,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final CustomMemberDetailService customUserDetailService;
+    private final CustomMemberDetailService customMemberDetailService;
+    AuthEntryPoint unauthorizedHandler;
+
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -33,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService);
+        auth
+                .userDetailsService(customMemberDetailService)
+                .passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
@@ -46,26 +55,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //TODO: 2022. 11. 15. 추후 antMatchers 재설정해야 함. (USER, ADMIN ROLE 구분) -sonrose
         http
                 .cors()
-        .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-                .cors().disable()
-                .csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .exceptionHandling().authenticationEntryPoint(new AuthEntryPoint())
-        .and()
+                    .and()
+                .csrf()
+                    .disable()
+                .exceptionHandling()
+                    .authenticationEntryPoint(unauthorizedHandler)
+                    .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                    .antMatchers("/","/error","/favicon.ico", "/**/*.png", "/**/*.gif",
+                .antMatchers(
+                        "/",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
                         "/**/*.svg",
                         "/**/*.jpg",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js").permitAll()
-/*                .antMatchers("/api/v1/auction/sign-up").permitAll()
-                .antMatchers("/api/v1/auction/sign-in").permitAll()
-                .antMatchers("/api/v1/auction/{memberId}").access("hasRole('USER')")*/
-                .anyRequest().permitAll();
+                        "/**/*.js"
+                )
+                .permitAll()
+                .antMatchers("/api/v1/auction/sign-up", "/api/v1/auction/sign-in")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
