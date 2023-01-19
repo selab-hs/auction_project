@@ -1,9 +1,11 @@
 package com.selab.auction.member.model.entity;
 
 import com.selab.auction.common.BaseEntity;
-import com.selab.auction.member.model.vo.MemberRoleName;
 import com.selab.auction.member.model.vo.MemberState;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;

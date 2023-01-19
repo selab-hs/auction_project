@@ -26,7 +26,7 @@ public class MemberSignUpService {
     public MemberSignUpResponseDto signUp(MemberSignUpRequestDto newMember) {
         String encodedPassword = passwordEncoder.encode(newMember.getPassword());
 
-        MemberRole memberRole = memberRoleRepository.findByName(MemberRoleName.USER)
+        MemberRole memberRole = memberRoleRepository.findByName(MemberRoleName.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Member Role not set"));
 
         if(!newMember.getPassword().equals(newMember.getCheckPassword())) {
