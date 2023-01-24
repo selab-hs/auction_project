@@ -26,7 +26,7 @@ public class AuctionController {
     @PostMapping
     @ApiOperation(value = "경매 참여", notes = "해당 상품 번호와 멤버 번호, 경매 참여 가격 입력받아 경매 참여 진행하기")
     public ResponseEntity<AuctionResponseDto> participateAuction(@RequestBody @Valid CreateAuctionDto createDto) {
-        AuctionResponseDto response = auctionService.participateAuction(createDto);
+        var response = auctionService.participateAuction(createDto);
 
         return ResponseDto.created(response);
     }
@@ -34,7 +34,7 @@ public class AuctionController {
     @PostMapping("/immediate-purchase")
     @ApiOperation(value = "상품 즉시 구매", notes = "해당 상품 번호와 멤버 번호를 입력받아, 즉시 구매 가격으로 구매 진행하기")
     public ResponseEntity<AuctionResponseDto> immediatePurchaseItem(@RequestBody @Valid CreateImmediatePurchaseDto createDto) {
-        AuctionResponseDto response = auctionService.immediatePurchaseItem(createDto);
+        var response = auctionService.immediatePurchaseItem(createDto);
 
         return ResponseDto.created(response);
     }
@@ -42,7 +42,7 @@ public class AuctionController {
     @GetMapping
     @ApiOperation(value = "특정 경매 조회", notes = "해당 상품 번호의 경매 진행 여부 조회하기")
     public ResponseEntity<AuctionResponseDto> searchAuctionHistoryById(@Positive long id) {
-        AuctionResponseDto response = auctionService.searchAuctionHistoryById(id);
+        var response = auctionService.searchAuctionHistoryById(id);
 
         return ResponseDto.ok(response);
     }
@@ -50,7 +50,7 @@ public class AuctionController {
     @PostMapping("/buy-comment")
     @ApiOperation(value = "구매자 코멘트 등록", notes = "해당 경매의 구매자가 판매자에 대한 코멘트와 별점 등록하기")
     public ResponseEntity<AuctionBuyCommentResponseDto> registerBuyComment(@RequestBody @Valid CreateBuyCommentDto commentDto) {
-        AuctionBuyCommentResponseDto response = auctionCommentService.registerBuyComment(commentDto);
+        var response = auctionCommentService.registerBuyComment(commentDto);
 
         return ResponseDto.created(response);
     }

@@ -52,7 +52,10 @@ public class ItemController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ItemResponse> updateItemById(@PathVariable("id") Long id, @RequestBody ItemUpdateRequest request) {
+    public ResponseEntity<ItemResponse> updateItemById(
+            @PathVariable("id") Long id,
+            @RequestBody ItemUpdateRequest request
+    ) {
         ItemResponse response = itemService.updateItemById(id, request);
         return ResponseDto.ok(response);
     }

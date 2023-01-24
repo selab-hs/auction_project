@@ -25,10 +25,11 @@ public class AuctionCommentService {
     private final ItemService itemService;
     private final MemberGradeUpdateService memberGradeUpdateService;
 
+    // TODO : save and Flush 사용 이유는?
     @Transactional
     public AuctionBuyCommentResponseDto registerBuyComment(CreateBuyCommentDto commentDto) {
-        long memberId = itemService.getItemEntityById(commentDto.getItemId()).getMemberId();
-        AuctionBuyComment auctionBuyComment = buyRepository.saveAndFlush(commentDto.toEntity(memberId));
+        var memberId = itemService.getItemEntityById(commentDto.getItemId()).getMemberId();
+        var auctionBuyComment = buyRepository.saveAndFlush(commentDto.toEntity(memberId));
 
         memberGradeUpdateService.updateMemberGrade(memberId, calculationMemberGrade(memberId));
 
@@ -37,7 +38,7 @@ public class AuctionCommentService {
 
     @Transactional
     public AuctionSaleCommentResponseDto registerSaleComment(CreateSaleCommentDto commentDto) {
-        AuctionSaleComment auctionSaleComment = saleRepository.saveAndFlush(commentDto.toEntity());
+        var auctionSaleComment = saleRepository.saveAndFlush(commentDto.toEntity());
 
         memberGradeUpdateService.updateMemberGrade(auctionSaleComment.getSaleMemberId(), calculationMemberGrade(auctionSaleComment.getSaleMemberId()));
 
@@ -46,17 +47,17 @@ public class AuctionCommentService {
 
     @Transactional(readOnly = true)
     public Double calculationMemberGrade(long memberId) {
-        List<AuctionBuyComment> searchByBuyMemberId = buyRepository.findByBuyMemberId(memberId);
-        List<AuctionSaleComment> searchBySaleMemberId = saleRepository.findBySaleMemberId(memberId);
+        var searchByBuyMemberId = buyRepository.findByBuyMemberId(memberId);
+        var searchBySaleMemberId = saleRepository.findBySaleMemberId(memberId);
 
         if (searchByBuyMemberId.size() == 0 && searchBySaleMemberId.size() == 0)
             return 0D;
 
-        double buyMemberGradeSum = searchByBuyMemberId.stream()
+        var buyMemberGradeSum = searchByBuyMemberId.stream()
                 .mapToDouble(AuctionBuyComment::getGrade)
                 .sum();
 
-        double saleMemberGradeSum = searchBySaleMemberId.stream()
+        var saleMemberGradeSum = searchBySaleMemberId.stream()
                 .mapToDouble(AuctionSaleComment::getGrade)
                 .sum();
 

@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+// TODO : 카테고리는 enum이 아닌, DB 데이터로 관리 필요
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
