@@ -14,11 +14,13 @@ import com.selab.auction.participation.model.dto.AuctionResponseDto;
 import com.selab.auction.participation.model.dto.CreateAuctionDto;
 import com.selab.auction.participation.model.dto.CreateImmediatePurchaseDto;
 import com.selab.auction.participation.repository.AuctionRepository;
+import com.selab.auction.redisson.RedissonLockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+
 
 // TODO : 코드 리펙토링 필요
 @Service
@@ -27,6 +29,7 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final MemberFindService memberFindService;
     private final ItemService itemService;
+    private final RedissonLockService lockService;
 
     @Transactional
     public AuctionResponseDto participateAuction(CreateAuctionDto createDto) {
@@ -91,5 +94,11 @@ public class AuctionService {
     public Item validateAuctionRequest(Long memberId, Long itemId) {
         memberFindService.findById(memberId);
         return itemService.getItemEntityById(itemId);
+    }
+
+    @Transactional
+    public void getAuctionRock() {
+        String lockName = "auctionLock";
+        lockService.acquireRock(lockName);
     }
 }
