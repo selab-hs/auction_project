@@ -22,7 +22,7 @@ public class AuctionSaveTest {
     private AuctionRepository auctionRepository;
 
     @Test
-    void AuctionSaveTest() throws InterruptedException{
+    void 동시성테스트() throws InterruptedException{
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         CountDownLatch countDownLatch = new CountDownLatch(100);
 
@@ -42,10 +42,11 @@ public class AuctionSaveTest {
         Long resultNum = auctionRepository.count();
 
         assertThat(resultNum).isEqualTo(100);
+        assertThat(countDownLatch.getCount()).isZero();
     }
 
     @Test
-    void AuctionSaveTest2() throws InterruptedException{
+    void 동시성실패테스트() throws InterruptedException{
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         CountDownLatch countDownLatch = new CountDownLatch(100);
 
@@ -65,5 +66,6 @@ public class AuctionSaveTest {
         Long resultNum = auctionRepository.count();
 
         assertThat(resultNum).isEqualTo(100);
+        assertThat(countDownLatch.getCount()).isZero();
     }
 }
