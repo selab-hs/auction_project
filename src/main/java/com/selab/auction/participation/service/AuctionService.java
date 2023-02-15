@@ -14,7 +14,6 @@ import com.selab.auction.participation.model.dto.AuctionResponseDto;
 import com.selab.auction.participation.model.dto.CreateAuctionDto;
 import com.selab.auction.participation.model.dto.CreateImmediatePurchaseDto;
 import com.selab.auction.participation.repository.AuctionRepository;
-import com.selab.auction.redisson.RedissonLockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final MemberFindService memberFindService;
     private final ItemService itemService;
-    private final RedissonLockService lockService;
+    private final RedissonAuctionLockService lockService;
 
     @Transactional
     public AuctionResponseDto participateAuction(CreateAuctionDto createDto) {
@@ -75,14 +74,16 @@ public class AuctionService {
                 .filter((auction) -> createAuctionDto.getRequestPrice() > (auction.getAuctionPrice() + item.getPrice() * 0.01))
                 .orElseThrow(WrongRequestPriceException::new);
 
-        auctionRepository.save(response);
+        lockService.saveAuctionEntity(response);
 
         return response.toResponseDto();
     }
 
     private AuctionResponseDto validateFirstItemPrice(CreateAuctionDto createAuctionDto, Item item) {
         if (createAuctionDto.getRequestPrice() >= item.getPrice()) {
-            var response = auctionRepository.save(createAuctionDto.toEntity());
+            var response = createAuctionDto.toEntity();
+            lockService.saveAuctionEntity(response);
+
             item.updateState(ItemState.PROGRESS);
 
             return response.toResponseDto();
@@ -96,9 +97,4 @@ public class AuctionService {
         return itemService.getItemEntityById(itemId);
     }
 
-    @Transactional
-    public void getAuctionRock() {
-        String lockName = "auctionLock";
-        lockService.acquireRock(lockName);
-    }
 }
