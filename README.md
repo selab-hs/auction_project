@@ -21,7 +21,7 @@ SE Lab 스터디 1팀 경매 프로젝트
 - JAVA 17
 - IDE: IntelliJ
 - Framework: SpringBoot
-- DB: MySQL
+- DB: MySQL, Redis
 - ORM: JPA
 
 <br>
