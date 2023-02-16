@@ -25,6 +25,8 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
+    private final ItemLockService itemLockService;
+
     @Transactional(readOnly = true)
     public Page<ItemResponse> getAllItems(Pageable pageable) {
         return itemRepository.findAllByStateNot(pageable, ItemState.INACTIVE)
@@ -44,21 +46,21 @@ public class ItemService {
     @Transactional
     public ItemResponse createItem(ItemCreateRequest request) {
         //TODO : 예외처리 - memberId, 가능한 price인지?
-
-        return ItemResponse.of(itemRepository.save(Item.of(request)));
+        var item = itemLockService.createItem(Item.of(request));
+        return ItemResponse.of(item);
     }
 
     @Transactional
     public ItemResponse updateItemById(Long id, ItemUpdateRequest request) {
         var item = itemRepository.findById(id).orElseThrow(NotExistItemException::new);
-        item.update(request);
+        itemLockService.updateItem(item, request);
         return ItemResponse.of(item);
     }
 
     @Transactional
     public void deleteItemById(Long id) {
         var item = itemRepository.findById(id).orElseThrow(NotExistItemException::new);
-        item.updateState(ItemState.INACTIVE);
+        itemLockService.updateItemState(item, ItemState.INACTIVE);
     }
 
     @Transactional(readOnly = true)
@@ -73,7 +75,7 @@ public class ItemService {
 
     @Transactional
     public void updateItemStateToCompleted(Item item) {
-        item.updateState(ItemState.COMPLETE);
+        itemLockService.updateItemState(item, ItemState.COMPLETE);
     }
 
     @Transactional
