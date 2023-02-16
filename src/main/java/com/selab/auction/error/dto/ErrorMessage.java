@@ -30,6 +30,7 @@ public enum ErrorMessage {
 
     NOT_EXIST_MEMBER(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     INACTIVE_MEMBER(HttpStatus.UNAUTHORIZED, "휴면 회원입니다."),
+    FAILED_TO_ACQUIRE_LOCK(HttpStatus.CONFLICT, "락을 얻는데 실패하였습니다"),
     ;
 
     private final HttpStatus status;

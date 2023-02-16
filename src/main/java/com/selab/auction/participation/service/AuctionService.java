@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 
+
 // TODO : 코드 리펙토링 필요
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final MemberFindService memberFindService;
     private final ItemService itemService;
+    private final RedissonAuctionLockService lockService;
 
     @Transactional
     public AuctionResponseDto participateAuction(CreateAuctionDto createDto) {
@@ -72,14 +74,16 @@ public class AuctionService {
                 .filter((auction) -> createAuctionDto.getRequestPrice() > (auction.getAuctionPrice() + item.getPrice() * 0.01))
                 .orElseThrow(WrongRequestPriceException::new);
 
-        auctionRepository.save(response);
+        lockService.saveAuctionEntity(response);
 
         return response.toResponseDto();
     }
 
     private AuctionResponseDto validateFirstItemPrice(CreateAuctionDto createAuctionDto, Item item) {
         if (createAuctionDto.getRequestPrice() >= item.getPrice()) {
-            var response = auctionRepository.save(createAuctionDto.toEntity());
+            var response = createAuctionDto.toEntity();
+            lockService.saveAuctionEntity(response);
+
             item.updateState(ItemState.PROGRESS);
 
             return response.toResponseDto();
@@ -92,4 +96,5 @@ public class AuctionService {
         memberFindService.findById(memberId);
         return itemService.getItemEntityById(itemId);
     }
+
 }
