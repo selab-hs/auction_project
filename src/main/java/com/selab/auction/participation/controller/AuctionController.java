@@ -7,11 +7,7 @@ import com.selab.auction.participation.service.AuctionService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -61,5 +57,21 @@ public class AuctionController {
         AuctionSaleCommentResponseDto response = auctionCommentService.registerSaleComment(commentDto);
 
         return ResponseDto.created(response);
+    }
+
+    @PatchMapping("/buy-comment")
+    @ApiOperation(value = "구매자 코멘트 변경", notes = "해당 경매의 구매자가 판매자에 대한 코멘트와 별점 변경하기")
+    public ResponseEntity<AuctionBuyCommentResponseDto> changeBuyComment(@RequestBody @Valid ChangeBuyCommentDto commentDto) {
+        var response = auctionCommentService.changeBuyComment(commentDto);
+
+        return ResponseDto.ok(response);
+    }
+
+    @PatchMapping("/sale-comment")
+    @ApiOperation(value = "판매자 코멘트 변경", notes = "해당 경매의 판매자가 구매자에 대한 코멘트와 별점 변경하기")
+    public ResponseEntity<AuctionSaleCommentResponseDto> changeSaleComment(@RequestBody @Valid ChangeSaleCommentDto commentDto) {
+        var response = auctionCommentService.changeSaleComment(commentDto);
+
+        return ResponseDto.ok(response);
     }
 }

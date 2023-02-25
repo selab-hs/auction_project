@@ -19,6 +19,8 @@ public enum ErrorMessage {
     WRONG_BUY_MEMBER(HttpStatus.BAD_REQUEST, "잘못된 판매자 요청 정보입니다"),
     WRONG_SALE_MEMBER(HttpStatus.BAD_REQUEST, "잘못된 구매자 요청 정보입니다"),
     NOT_EXISTS_AUCTION_ITEM_RECORD(HttpStatus.NOT_FOUND, "해당 아이템 번호를 가진 경매기록은 존재하지 않습니다"),
+    NOT_EXISTS_AUCTION_BUY_RECORD(HttpStatus.NOT_FOUND, "해당 경매 번호를 가진 구매 경매기록은 존재하지 않습니다"),
+    NOT_EXISTS_AUCTION_SALE_RECORD(HttpStatus.NOT_FOUND, "해당 경매 번호를 가진 판매 경매기록은 존재하지 않습니다"),
 
     NOT_BLANK(HttpStatus.BAD_REQUEST, "필수값이 누락되었습니다."),
     EMAIL_PATTERN(HttpStatus.BAD_REQUEST, "이메일 형식이 아닙니다."),

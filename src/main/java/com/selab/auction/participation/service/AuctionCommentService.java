@@ -1,17 +1,12 @@
 package com.selab.auction.participation.service;
 
-import com.selab.auction.error.exception.auction.AlreadyExistsCommentException;
-import com.selab.auction.error.exception.auction.WrongBuyMemberException;
-import com.selab.auction.error.exception.auction.WrongSaleMemberException;
+import com.selab.auction.error.exception.auction.*;
 import com.selab.auction.error.exception.item.WrongItemStateException;
 import com.selab.auction.item.model.dto.ItemResponse;
 import com.selab.auction.item.model.vo.ItemState;
 import com.selab.auction.item.service.ItemService;
 import com.selab.auction.member.service.MemberGradeUpdateService;
-import com.selab.auction.participation.model.dto.AuctionBuyCommentResponseDto;
-import com.selab.auction.participation.model.dto.AuctionSaleCommentResponseDto;
-import com.selab.auction.participation.model.dto.CreateBuyCommentDto;
-import com.selab.auction.participation.model.dto.CreateSaleCommentDto;
+import com.selab.auction.participation.model.dto.*;
 import com.selab.auction.participation.model.entity.AuctionBuyComment;
 import com.selab.auction.participation.model.entity.AuctionSaleComment;
 import com.selab.auction.participation.repository.AuctionBuyCommentRepository;
@@ -49,6 +44,30 @@ public class AuctionCommentService {
         memberGradeUpdateService.updateMemberGrade(auctionSaleComment.getSaleMemberId(), calculationMemberGrade(auctionSaleComment.getSaleMemberId()));
 
         return auctionSaleComment.toResponseDto();
+    }
+
+    @Transactional
+    public AuctionBuyCommentResponseDto changeBuyComment(ChangeBuyCommentDto commentDto) {
+        var record = searchAuctionBuyComment(commentDto.getId());
+        validateBuyMember(record.getId(), commentDto.getId());
+
+        record.changeBuyComment(commentDto.getComment(), commentDto.getGrade());
+        buyRepository.save(record);
+        long buyMemberId = record.getBuyMemberId();
+        memberGradeUpdateService.updateMemberGrade(buyMemberId, calculationMemberGrade(buyMemberId));
+        return record.toResponseDto();
+    }
+
+    @Transactional
+    public AuctionSaleCommentResponseDto changeSaleComment(ChangeSaleCommentDto commentDto) {
+        var record = searchAuctionSaleComment(commentDto.getId());
+        validateSaleMember(record.getId(), commentDto.getId());
+
+        record.changeSaleComment(commentDto.getComment(), commentDto.getGrade());
+        saleRepository.save(record);
+        long saleMemberId = record.getBuyMemberId();
+        memberGradeUpdateService.updateMemberGrade(saleMemberId, calculationMemberGrade(saleMemberId));
+        return record.toResponseDto();
     }
 
     @Transactional(readOnly = true)
@@ -99,12 +118,36 @@ public class AuctionCommentService {
     }
 
     @Transactional(readOnly = true)
-    public ItemResponse validateCompletedItemState(long itemId) {
+    public ItemResponse validateCompletedItemState(Long itemId) {
         var item = itemService.getItemById(itemId);
         if(!item.getState().equals(ItemState.COMPLETE)) {
             throw new WrongItemStateException();
         }
 
         return item;
+    }
+
+    @Transactional(readOnly = true)
+    public AuctionBuyComment searchAuctionBuyComment(Long id) {
+        return buyRepository.findById(id)
+                .orElseThrow(NotExistAuctionBuyRecordException::new);
+    }
+
+    @Transactional(readOnly = true)
+    public AuctionSaleComment searchAuctionSaleComment(Long id) {
+        return saleRepository.findById(id)
+                .orElseThrow(NotExistAuctionSaleRecordException::new);
+    }
+
+    private void validateBuyMember(Long dtoId, Long entityId) {
+        if(!dtoId.equals(entityId)) {
+            throw new WrongBuyMemberException();
+        }
+    }
+
+    private void validateSaleMember(Long dtoId, Long entityId) {
+        if(!dtoId.equals(entityId)) {
+            throw new WrongSaleMemberException();
+        }
     }
 }
