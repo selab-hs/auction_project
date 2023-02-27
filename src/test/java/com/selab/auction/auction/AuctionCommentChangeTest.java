@@ -43,9 +43,9 @@ public class AuctionCommentChangeTest {
         // 즉시구매
         CreateImmediatePurchaseDto immediatePurchaseTest = new CreateImmediatePurchaseDto(1L, 1L);
         auctionService.immediatePurchaseItem(immediatePurchaseTest);
-        // 코멘트 작성 || 현재 오류
+        // 코멘트 작성
         CreateBuyCommentDto createBuyCommentTest = new CreateBuyCommentDto(1L, 1L, "good", 5D);
-        CreateSaleCommentDto createSaleCommentTest = new CreateSaleCommentDto(1L, 2L, 5D, 1L, "good");
+        CreateSaleCommentDto createSaleCommentTest = new CreateSaleCommentDto(1L, 1L, 2L, "good", 5D);
         auctionCommentService.registerBuyComment(createBuyCommentTest);
         auctionCommentService.registerSaleComment(createSaleCommentTest);
         // 코멘트 변경

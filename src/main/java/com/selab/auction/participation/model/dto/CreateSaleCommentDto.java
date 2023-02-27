@@ -12,20 +12,22 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateSaleCommentDto {
+
+    @Positive
+    Long itemId;
+
     @Positive
     Long buyMemberId;
 
     @Positive
     Long saleMemberId;
 
+    String comment;
+
     @Positive
     @Max(5)
     Double grade;
 
-    @Positive
-    Long itemId;
-
-    String comment;
 
     public AuctionSaleComment toEntity(){
         return AuctionSaleComment.builder()

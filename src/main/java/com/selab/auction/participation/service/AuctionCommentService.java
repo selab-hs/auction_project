@@ -49,11 +49,10 @@ public class AuctionCommentService {
     @Transactional
     public AuctionBuyCommentResponseDto changeBuyComment(ChangeBuyCommentDto commentDto) {
         var record = searchAuctionBuyComment(commentDto.getId());
-        validateBuyMember(record.getId(), commentDto.getId());
+        long buyMemberId = record.getBuyMemberId();
 
         record.changeBuyComment(commentDto.getComment(), commentDto.getGrade());
         buyRepository.save(record);
-        long buyMemberId = record.getBuyMemberId();
         memberGradeUpdateService.updateMemberGrade(buyMemberId, calculationMemberGrade(buyMemberId));
         return record.toResponseDto();
     }
@@ -61,11 +60,10 @@ public class AuctionCommentService {
     @Transactional
     public AuctionSaleCommentResponseDto changeSaleComment(ChangeSaleCommentDto commentDto) {
         var record = searchAuctionSaleComment(commentDto.getId());
-        validateSaleMember(record.getId(), commentDto.getId());
+        long saleMemberId = record.getSaleMemberId();
 
         record.changeSaleComment(commentDto.getComment(), commentDto.getGrade());
         saleRepository.save(record);
-        long saleMemberId = record.getBuyMemberId();
         memberGradeUpdateService.updateMemberGrade(saleMemberId, calculationMemberGrade(saleMemberId));
         return record.toResponseDto();
     }
@@ -137,17 +135,5 @@ public class AuctionCommentService {
     public AuctionSaleComment searchAuctionSaleComment(Long id) {
         return saleRepository.findById(id)
                 .orElseThrow(NotExistAuctionSaleRecordException::new);
-    }
-
-    private void validateBuyMember(Long dtoId, Long entityId) {
-        if(!dtoId.equals(entityId)) {
-            throw new WrongBuyMemberException();
-        }
-    }
-
-    private void validateSaleMember(Long dtoId, Long entityId) {
-        if(!dtoId.equals(entityId)) {
-            throw new WrongSaleMemberException();
-        }
     }
 }
