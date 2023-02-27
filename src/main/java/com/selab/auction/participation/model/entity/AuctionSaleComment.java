@@ -55,4 +55,9 @@ public class AuctionSaleComment extends BaseEntity {
                 .grade(this.grade)
                 .build();
     }
+
+    public void changeSaleComment(String comment, Double grade) {
+        this.comment = comment;
+        this.grade = grade;
+    }
 }
